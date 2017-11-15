@@ -1,0 +1,104 @@
+#server:
+#  context-path: /user
+management: 
+  security: 
+    enabled: false
+
+logging:
+  level:
+    com.netflix.discovery.shared: info
+    org.apache: warn
+    org.eclipse: warn
+    org.springframework: warn
+eureka: 
+  instance:
+    instance-id: ${spring.application.name}-${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+#    lease-expiration-duration-in-seconds: 30  
+#    lease-renewal-interval-in-seconds: 60
+    health-check-url-path: /health
+    status-page-url-path: /info
+    prefer-ip-address: true
+  client: 
+    registry-fetch-interval-seconds: 30
+    healthcheck: 
+      enabled: true
+
+info: 
+  app:
+    name: ${eureka.instance.instance-id} 
+    encoding: @project.build.sourceEncoding@
+    jdk: @java.version@
+
+endpoints: 
+  shutdown:
+    enabled: true   
+  mappings: 
+    enabled: true
+  info:
+    enabled: true
+    
+mybatis:
+  config-location: classpath:mybatis-config.xml
+
+spring: 
+  application: 
+    name: user-service
+    admin:
+      enabled: true
+  jackson: 
+    locale: zh
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-enums-using-to-string: true
+      write_dates_as_timestamps: false
+    deserialization:
+      read-enums-using-to-string: true
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null #mapper.default_view_inclusion优先级高于此配置
+    property-naming-strategy: com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy
+    mapper:
+      DEFAULT_VIEW_INCLUSION: false #jsonview 注解生效策略, false 只序列化被注解字段
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+  profiles:
+    active: dev
+sendSmsUtil:
+  host: http://gw.api.taobao.com/router/rest
+  type: normal
+  key: po6ZFxd3ZbZVlTqJ
+  secret: peQOKTQcPxMWxD5I5rKLvfCOem6GsX
+  templates: 
+  - code: SMS_61870050
+    name: 全民营销
+  - code: SMS_72895054
+    name: 全民营销
+defaultconfig:
+  system:
+    goal:
+      title: 无标题目标 #默认目标标题
+    tag:
+      upper-limit: 8 #目标中心tag 上限
+      user-limit: 100 #系统默认每用户可建 tag 数量上限
+  person:
+    tag:
+      user-limit: 100 #用户可建 tag 数量上限,优先级高于系统
+    task:
+      upper-limit: 100 #用户正在执行中的任务上限
+pagehelper:
+  offset-as-page-num: true
+  page-size-zero: true
+  params: pageNum=page;pageSize=perPage;
+  support-methods-arguments: true
+
+
+
+
+
+
+
+
+
+
+    
